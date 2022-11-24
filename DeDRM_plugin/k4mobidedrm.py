@@ -106,8 +106,6 @@ def cleanup_name(name):
     name = re.sub(r"\s", " ", name).strip()
     # delete control characters
     name = "".join(char for char in name if ord(char)>=32)
-    # delete non-ascii characters
-    name = "".join(char for char in name if ord(char)<=126)
     # remove leading dots
     while len(name)>0 and name[0] == ".":
         name = name[1:]
@@ -116,7 +114,7 @@ def cleanup_name(name):
         name = name[:-1]
     if len(name)==0:
         name="DecryptedBook"
-    return name
+    return name.strip()
 
 # must be passed unicode
 def unescape(text):
