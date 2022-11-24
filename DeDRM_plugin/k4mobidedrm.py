@@ -101,7 +101,7 @@ from argv_utils import unicode_argv
 # and some improvements suggested by jhaisley
 def cleanup_name(name):
     # substitute filename unfriendly characters
-    name = name.replace("<","[").replace(">","]").replace(" : "," – ").replace(": "," – ").replace(":","—").replace("/","_").replace("\\","_").replace("|","_").replace("\"","\'").replace("*","_").replace("?","")
+    name = name.replace("<","[").replace(">","]").replace(" : "," – ").replace(": "," – ").replace(":","—").replace("/","_").replace("\\","_").replace("|","_").replace("\"","\'").replace("*","_").replace("?","").replace(u"\uFF08", "(").replace(u"\uFF09", ")")
     # white space to single space, delete leading and trailing while space
     name = re.sub(r"\s", " ", name).strip()
     # delete control characters
@@ -218,13 +218,14 @@ def decryptBook(infile, outdir, kDatabaseFiles, androidFiles, serials, pids):
         re.match('^[0-9A-F-]{36}$', orig_fn_root)
     ):  # Kindle for PC / Mac / Android / Fire / iOS
         clean_title = cleanup_name(book.getBookTitle())
-        outfilename = "{}_{}".format(orig_fn_root, clean_title)
+        
+        # avoid excessively long file names
+        if len(clean_title)>150:
+            clean_title = clean_title[:99]+"--"+clean_title[-49:]
+        outfilename = "{}_{}".format(clean_title, orig_fn_root)
+
     else:  # E Ink Kindle, which already uses a reasonable name
         outfilename = orig_fn_root
-
-    # avoid excessively long file names
-    if len(outfilename)>150:
-        outfilename = outfilename[:99]+"--"+outfilename[-49:]
 
     outfilename = outfilename+"_nodrm"
     outfile = os.path.join(outdir, outfilename + book.getBookExtension())

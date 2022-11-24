@@ -65,6 +65,7 @@ def decrypt_all_books(input_path, output_path):
         for failed in failed_books:
             print(failed)
 
+
 if __name__ == "__main__":
     if len(argv) < 3:
         print('usage: dedrm.py [input_path] [output_path]')
