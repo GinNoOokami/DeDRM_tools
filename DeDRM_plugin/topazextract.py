@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 # topazextract.py
 # Mostly written by some_updates based on code from many others
 
@@ -22,10 +24,10 @@ import traceback
 from struct import pack
 from struct import unpack
 
-from alfcrypto import Topaz_Cipher
-from utilities import SafeUnbuffered
+from .alfcrypto import Topaz_Cipher
+from .utilities import SafeUnbuffered
 
-from argv_utils import unicode_argv
+from .argv_utils import unicode_argv
 
 
 #global switch

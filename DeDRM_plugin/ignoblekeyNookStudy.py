@@ -27,14 +27,16 @@ import hashlib
 import getopt
 import re
 
-from utilities import SafeUnbuffered
+#@@CALIBRE_COMPAT_CODE@@
+
+from .utilities import SafeUnbuffered
 
 try:
     from calibre.constants import iswindows
 except:
     iswindows = sys.platform.startswith('win')
 
-from argv_utils import unicode_argv
+from .argv_utils import unicode_argv
 
 class DrmException(Exception):
     pass
@@ -54,15 +56,26 @@ def getNookLogFiles():
         paths = set()
         if 'LOCALAPPDATA' in os.environ.keys():
             # Python 2.x does not return unicode env. Use Python 3.x
-            path = winreg.ExpandEnvironmentStrings("%LOCALAPPDATA%")
+            if sys.version_info[0] == 2:
+                path = winreg.ExpandEnvironmentStrings(u"%LOCALAPPDATA%")
+            else:
+                path = winreg.ExpandEnvironmentStrings("%LOCALAPPDATA%")
             if os.path.isdir(path):
                 paths.add(path)
         if 'USERPROFILE' in os.environ.keys():
             # Python 2.x does not return unicode env. Use Python 3.x
-            path = winreg.ExpandEnvironmentStrings("%USERPROFILE%")+"\\AppData\\Local"
+            if sys.version_info[0] == 2:
+                path = winreg.ExpandEnvironmentStrings(u"%USERPROFILE%")+u"\\AppData\\Local"
+            else:
+                path = winreg.ExpandEnvironmentStrings("%USERPROFILE%")+"\\AppData\\Local"
+
             if os.path.isdir(path):
                 paths.add(path)
-            path = winreg.ExpandEnvironmentStrings("%USERPROFILE%")+"\\AppData\\Roaming"
+
+            if sys.version_info[0] == 2:  
+                path = winreg.ExpandEnvironmentStrings(u"%USERPROFILE%")+u"\\AppData\\Roaming"
+            else:
+                path = winreg.ExpandEnvironmentStrings("%USERPROFILE%")+"\\AppData\\Roaming"
             if os.path.isdir(path):
                 paths.add(path)
         # User Shell Folders show take precedent over Shell Folders if present

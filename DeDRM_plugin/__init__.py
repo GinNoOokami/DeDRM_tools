@@ -5,7 +5,7 @@ from __future__ import print_function
 
 # __init__.py for DeDRM_plugin
 # Copyright © 2008-2020 Apprentice Harper et al.
-# Copyright © 2021 NoDRM
+# Copyright © 2021-2023 NoDRM
 
 __license__   = 'GPL v3'
 __docformat__ = 'restructuredtext en'
@@ -82,6 +82,7 @@ __docformat__ = 'restructuredtext en'
 #  10.0.0 - First forked version by NoDRM. See CHANGELOG.md for details.
 #  10.0.1 - Fixes a bug in the watermark code.
 #  10.0.2 - Fix Kindle for Mac & update Adobe key retrieval
+#  For changes made in 10.0.3 and above, see the CHANGELOG.md file
 
 """
 Decrypt DRMed ebooks.
@@ -95,7 +96,10 @@ import traceback
 #@@CALIBRE_COMPAT_CODE@@
 
 try: 
-    import __version
+    try: 
+        from . import __version
+    except:
+        import __version
 except: 
     print("#############################")
     print("Failed to load the DeDRM plugin")
@@ -133,8 +137,10 @@ try:
 except:
     config_dir = ""
 
-
-import utilities
+try: 
+    from . import utilities
+except: 
+    import utilities
 
 
 PLUGIN_NAME = __version.PLUGIN_NAME
@@ -914,6 +920,9 @@ class DeDRM(FileTypePlugin):
             # perhaps we need to get a new default Kindle for Mac/PC key
             defaultkeys = []
             print("{0} v{1}: Failed to decrypt with error: {2}".format(PLUGIN_NAME, PLUGIN_VERSION,e.args[0]))
+
+            traceback.print_exc()
+
             print("{0} v{1}: Looking for new default Kindle Key after {2:.1f} seconds".format(PLUGIN_NAME, PLUGIN_VERSION, time.time()-self.starttime))
 
             try:

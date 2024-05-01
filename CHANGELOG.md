@@ -67,7 +67,11 @@ List of changes since the fork of Apprentice Harper's repository:
 - Fix Nook Study key retrieval code (partially fixes #50).
 - Make the plugin work on Calibre 6 (Qt 6). (fixes #54 and #98) If you're running Calibre 6 and you notice any issues, please open a bug report.
 
-## Fixes on master (not yet released):
+## Fixes in v10.0.9 (RC for v10.1.0, 2023-08-02):
+
+Note that versions v10.0.4(s), v10.0.5(s) and v10.0.6(s) were released by other people in various forks, so I have decided to make a larger version jump so there are no conflicting version numbers / different builds with the same version number. 
+
+This is v10.0.9, a release candidate for v10.1.0. I don't expect there to be major issues / bugs, but since a lot of code has changed in the last year I wanted to get some "extended testing" before this becomes v10.1.0. 
 
 - Fix a bug introduced with #48 that breaks DeDRM'ing on Calibre 4 (fixes #101).
 - Fix some more Calibre-6 bugs in the Obok plugin (should fix #114).
@@ -83,5 +87,22 @@ List of changes since the fork of Apprentice Harper's repository:
 - Update the README (fixes #136) to indicate that Apprentice Harper's version is no longer being updated.
 - Fix a bug where PDFs with empty arrays (`<>`) in a PDF object failed to decrypt, fixes #183.
 - Automatically strip whitespace from entered Amazon Kindle serial numbers, should fix #158.
-- Obok: Add new setting option "Add new entry" for duplicate books to always add them to the Calibre database as a new book. Untested. Should fix #148.
-- Obok: Fix where changing the Calibre UI language to some languages would cause the "duplicate book" setting to reset. Untested.
+- Obok: Add new setting option "Add new entry" for duplicate books to always add them to the Calibre database as a new book. Fixes #148.
+- Obok: Fix where changing the Calibre UI language to some languages would cause the "duplicate book" setting to reset.
+- Fix Python3 bug in stylexml2css.php script, fixes #232.
+- PDF: Ignore invalid PDF objids unless the script is running in strict mode. Fixes some PDFs, apparently. Fixes #233. 
+- Bugfix: EPUBs with remaining content in the encryption.xml after decryption weren't written correctly. 
+- Support for Adobe's 'aes128-cbc-uncompressed' encryption method (fixes #242).
+- Two bugfixes for Amazon DeDRM from Satuoni ( https://github.com/noDRM/DeDRM_tools/issues/315#issuecomment-1508305428 ) and andrewc12 ( https://github.com/andrewc12/DeDRM_tools/commit/d9233d61f00d4484235863969919059f4d0b2057 ) that might make the plugin work with newer versions.
+- Fix font decryption not working with some books (fixes #347), thanks for the patch @bydioeds. 
+- Fix a couple unicode errors for Python2 in Kindle and Nook code.
+
+## Fixes on master (not yet released):
+
+- Fix a bug where decrypting a 40-bit RC4 pdf with R=2 didn't work.
+- Fix a bug where decrypting a 256-bit AES pdf with V=5 didn't work.
+- Fix bugs in kgenpids.py, alfcrypto.py, mobidedrm.py and kindlekey.py that caused it to fail on Python 2 (#380).
+- Fix some bugs (Python 2 and Python 3) in erdr2pml.py (untested).
+- Fix file lock bug in androidkindlekey.py on Windows with Calibre >= 7 (untested).
+- A bunch of updates to the external FileOpen ineptpdf script, might fix #442 (untested).
+
